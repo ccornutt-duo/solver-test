@@ -1,0 +1,22 @@
+{
+    "name": "social-media-app",
+    "description": "A Twitter-like social media application",
+    "type": "project",
+    "require": {
+        "slim/slim": "^4.9",
+        "slim/twig-view": "^3.2",
+        "slim/psr7": "^1.5",
+        "php-di/php-di": "^6.3",
+        "php-di/slim-bridge": "^3.2",
+        "illuminate/database": "^8.0",
+        "respect/validation": "^2.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "scripts": {
+        "start": "php -S localhost:8000 -t public"
+    }
+}

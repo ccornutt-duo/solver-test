@@ -1,0 +1,38 @@
+{% extends 'layout.twig' %}
+
+{% block title %}Home - Social Media App{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="text-center mb-5">
+                <h1>Welcome to Social Media App</h1>
+                <p class="lead">Connect with friends and share your thoughts.</p>
+                
+                {% if not session.user %}
+                    <div class="mt-4">
+                        <a href="/auth/register" class="btn btn-primary me-2">Sign Up</a>
+                        <a href="/auth/login" class="btn btn-outline-primary">Login</a>
+                    </div>
+                {% else %}
+                    <div class="mt-4">
+                        <a href="/posts" class="btn btn-primary">View Timeline</a>
+                    </div>
+                {% endif %}
+            </div>
+            
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Features</h5>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Create an account and customize your profile</li>
+                        <li class="list-group-item">Post updates (up to 280 characters)</li>
+                        <li class="list-group-item">Follow other users</li>
+                        <li class="list-group-item">Like posts from users you follow</li>
+                        <li class="list-group-item">View a timeline of posts from users you follow</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

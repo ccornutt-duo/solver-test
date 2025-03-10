@@ -1,0 +1,54 @@
+{% extends 'layout.twig' %}
+
+{% block title %}My Profile - Social Media App{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-body text-center">
+                    <h3 class="card-title">{{ user.username }}</h3>
+                    <p class="text-muted">{{ user.email }}</p>
+                    
+                    <div class="d-flex justify-content-around mt-3">
+                        <div>
+                            <h5>{{ followersCount }}</h5>
+                            <small class="text-muted">Followers</small>
+                        </div>
+                        <div>
+                            <h5>{{ followingCount }}</h5>
+                            <small class="text-muted">Following</small>
+                        </div>
+                        <div>
+                            <h5>{{ posts|length }}</h5>
+                            <small class="text-muted">Posts</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-8">
+            <h4 class="mb-3">My Posts</h4>
+            
+            {% if posts|length > 0 %}
+                {% for post in posts %}
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <h5 class="card-title">{{ user.username }}</h5>
+                                <small class="text-muted">{{ post.created_at|date("M d, Y h:i A") }}</small>
+                            </div>
+                            <p class="card-text">{{ post.content }}</p>
+                            <small class="text-muted">{{ post.likes.count }} likes</small>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="alert alert-info">
+                    <p class="mb-0">You haven't posted anything yet.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

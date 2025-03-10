@@ -1,0 +1,91 @@
+{% extends 'layout.twig' %}
+
+{% block title %}Timeline - Social Media App{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Create a Post</h5>
+                    <form method="post" action="/posts">
+                        <div class="mb-3">
+                            <textarea class="form-control {% if errors.content %}is-invalid{% endif %}" 
+                                name="content" rows="3" placeholder="What's on your mind?" 
+                                maxlength="280">{{ old.content | default('') }}</textarea>
+                            {% if errors.content %}
+                                <div class="invalid-feedback">{{ errors.content }}</div>
+                            {% endif %}
+                            <div class="form-text text-end" id="charCount">0/280</div>
+                        </div>
+                        <div class="text-end">
+                            <button type="submit" class="btn btn-primary">Post</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <h4 class="mb-3">Timeline</h4>
+
+            {% if posts|length > 0 %}
+                {% for post in posts %}
+                    <div class="card post-card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <h5 class="card-title">
+                                    <a href="/users/{{ post.user.username }}" class="text-decoration-none">
+                                        {{ post.user.username }}
+                                    </a>
+                                </h5>
+                                <small class="text-muted">{{ post.created_at|date("M d, Y h:i A") }}</small>
+                            </div>
+                            <p class="card-text">{{ post.content }}</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    {% if post.isLikedBy(currentUser) %}
+                                        <form method="post" action="/posts/{{ post.id }}/unlike" class="d-inline">
+                                            <button type="submit" class="btn btn-sm btn-link text-danger p-0">
+                                                <i class="bi bi-heart-fill"></i> {{ post.likes.count }}
+                                            </button>
+                                        </form>
+                                    {% else %}
+                                        <form method="post" action="/posts/{{ post.id }}/like" class="d-inline">
+                                            <button type="submit" class="btn btn-sm btn-link text-muted p-0">
+                                                <i class="bi bi-heart"></i> {{ post.likes.count }}
+                                            </button>
+                                        </form>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="alert alert-info">
+                    <p class="mb-0">Your timeline is empty. Follow users to see their posts here.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const textarea = document.querySelector('textarea[name="content"]');
+            const charCount = document.getElementById('charCount');
+            
+            function updateCharCount() {
+                const count = textarea.value.length;
+                charCount.textContent = count + '/280';
+                
+                if (count > 280) {
+                    charCount.classList.add('text-danger');
+                } else {
+                    charCount.classList.remove('text-danger');
+                }
+            }
+            
+            textarea.addEventListener('input', updateCharCount);
+            updateCharCount();
+        });
+    </script>
+{% endblock %}
